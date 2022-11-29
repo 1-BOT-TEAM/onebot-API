@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 interface OpenWeatherMapJson {
     coord: {
         lon: number;
@@ -42,17 +40,29 @@ interface OpenWeatherMapJson {
     cod: number;
 }
 
-// create config function to get api key
-let APIKEY: string;
-export function setApiKey(apiKey: string) {
-    APIKEY = apiKey;
+// fetch api using https without any library
+import * as https from 'https';
+
+const fetch = (url: string) => {
+    return new Promise((resolve, reject) => {
+        https.get(url, (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                resolve(data);
+            });
+        }).on('error', (err) => {
+            reject(err);
+        });
+    });
 }
 
-export async function getWeather(city: string): Promise<OpenWeatherMapJson> {
-    if (!APIKEY) {
-        throw new Error('API key not set');
-    }
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}`)
-    const data = await response.json() as any as OpenWeatherMapJson
-    return data;
+export function getWeather(city: string): Promise<OpenWeatherMapJson> {
+    const response = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.OPENWEATHER_API_KEY}&units=metric`);
+    return response.then((data) => {
+        return JSON.parse(data as string);
+    });
 }
+
