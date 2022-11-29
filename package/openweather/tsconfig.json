@@ -4,7 +4,7 @@
         "rootDir": "src",
         "composite": true,
         "preserveConstEnums": true,
-        "tsBuildInfoFile": "./dit/.tsbuildinfo",
+        "tsBuildInfoFile": "./dist/.tsbuildinfo",
         "strict": true,
         "allowJs": true,
         "checkJs": true,
