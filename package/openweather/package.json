@@ -1,5 +1,5 @@
 {
-  "name": "@onebot-api/openweather",
+  "name": "@onebot/openweather",
   "version": "1.0.0",
   "description": "Simple api for Weather",
   "scripts": {
