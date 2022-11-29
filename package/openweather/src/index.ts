@@ -49,17 +49,16 @@ export function setAPIKey(key: string) {
   APIkey = key;
 }
 
-export function getWeather(city: string): Promise<OpenWeatherMapJson> {
+function fetch(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    https.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}`, (res) => {
+    https.get(url, (res) => {
       if (res.statusCode === 200) {
         res.setEncoding('utf8');
         let rawData = '';
         res.on('data', (chunk) => (rawData += chunk));
         res.on('end', () => {
           try {
-            const parsedData = JSON.parse(rawData);
-            resolve(parsedData);
+            resolve(rawData);
           } catch (e) {
             reject(e);
           }
@@ -69,4 +68,31 @@ export function getWeather(city: string): Promise<OpenWeatherMapJson> {
       }
     });
   });
+}
+
+export async function getWeatherByName(city: string): Promise<OpenWeatherMapJson> {
+  if (!APIkey) {
+    throw new Error('API key is not set');
+  }
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&units=metric`;
+  const data = await fetch(url);
+  return JSON.parse(data);
+}
+
+export async function getWeatherByZip(zip: string): Promise<OpenWeatherMapJson> {
+  if (!APIkey) {
+    throw new Error('API key is not set');
+  }
+  const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${APIkey}&units=metric`;
+  const data = await fetch(url);
+  return JSON.parse(data);
+}
+
+export async function getWeatherByCoord(lat: number, lon: number): Promise<OpenWeatherMapJson> {
+  if (!APIkey) {
+    throw new Error('API key is not set');
+  }
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric`;
+  const data = await fetch(url);
+  return JSON.parse(data);
 }

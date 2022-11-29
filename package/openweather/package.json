@@ -1,6 +1,6 @@
 {
   "name": "@oneboteam/openweather",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Simple api for Weather",
   "scripts": {
     "build": "tsc && npm run esm:default",
