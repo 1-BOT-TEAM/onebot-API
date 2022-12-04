@@ -1,7 +1,7 @@
 {
-  "name": "@oneboteam/openweather",
-  "version": "2.2.2",
-  "description": "Simple api for Weather",
+  "name": "@oneboteam/kitsu",
+  "version": "1.0.0",
+  "description": "Simple api for Anime and Manga",
   "scripts": {
     "build": "tsc && npm run esm:default",
     "esm:default": "gen-esm-wrapper dist/index.js dist/index.mjs",
